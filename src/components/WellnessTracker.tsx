@@ -3,14 +3,21 @@ import { HabitCard } from "./HabitCard";
 import { AddHabitForm } from "./AddHabitForm";
 import { DailyQuote } from "./DailyQuote"; 
 import { ProgressOverview } from "./ProgressOverview";
-import { Plus, Sparkles, Target } from "lucide-react";
+import { CountdownTimer } from "./CountdownTimer";
+import { MoodLogger } from "./MoodLogger";
+import { Achievements } from "./Achievements";
+import { Plus, Sparkles, Target, BarChart3, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import confetti from "canvas-confetti";
 
 export interface Habit {
   id: string;
   name: string;
   category: 'exercise' | 'mindfulness' | 'nutrition' | 'sleep' | 'learning' | 'other';
+  icon?: string;
+  color?: string;
   createdAt: string;
   completedDates: string[];
   currentStreak: number;
@@ -21,6 +28,17 @@ export const WellnessTracker = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // Confetti celebration
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#22c55e', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444'],
+    });
+  };
 
   // Load habits from localStorage on mount
   useEffect(() => {
@@ -40,11 +58,13 @@ export const WellnessTracker = () => {
     localStorage.setItem("wellness-habits", JSON.stringify(habits));
   }, [habits]);
 
-  const addHabit = (name: string, category: Habit['category']) => {
+  const addHabit = (name: string, category: Habit['category'], icon?: string, color?: string) => {
     const newHabit: Habit = {
       id: crypto.randomUUID(),
       name,
       category,
+      icon,
+      color,
       createdAt: new Date().toISOString(),
       completedDates: [],
       currentStreak: 0,
@@ -79,6 +99,9 @@ export const WellnessTracker = () => {
         updatedDates = [...habit.completedDates, today].sort();
         currentStreak = calculateStreak(updatedDates);
         bestStreak = Math.max(bestStreak, currentStreak);
+        
+        // Trigger confetti celebration
+        triggerConfetti();
         
         toast({
           title: "Great job! ✨",
@@ -131,16 +154,41 @@ export const WellnessTracker = () => {
       {/* Daily Quote */}
       <DailyQuote />
       
-      {/* Progress Overview */}
-      <ProgressOverview habits={habits} />
-      
-      {/* Add Habit Button */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Target className="w-5 h-5 text-primary" />
-          <h2 className="text-xl font-semibold">Today's Habits</h2>
-          <span className="text-sm text-muted-foreground">({habits.length})</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Countdown Timer */}
+        <CountdownTimer />
+        
+        {/* Mood Logger */}
+        <MoodLogger />
+        
+        {/* Progress Overview */}
+        <div className="lg:col-span-1">
+          <ProgressOverview habits={habits} />
         </div>
+      </div>
+      
+      {/* Achievements */}
+      <Achievements habits={habits} />
+      
+      {/* Navigation & Add Habit */}
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Target className="w-5 h-5 text-primary" />
+            <h2 className="text-xl font-semibold">Today's Habits</h2>
+            <span className="text-sm text-muted-foreground">({habits.length})</span>
+          </div>
+          
+          <Button
+            variant="outline"
+            onClick={() => navigate('/analytics')}
+            className="flex items-center gap-2 hover:border-primary hover:text-primary transition-smooth"
+          >
+            <BarChart3 className="w-4 h-4" />
+            Analytics
+          </Button>
+        </div>
+        
         <Button
           onClick={() => setShowAddForm(!showAddForm)}
           className="gradient-primary text-white hover:shadow-glow transition-all duration-300 hover:scale-105"

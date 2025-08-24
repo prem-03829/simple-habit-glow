@@ -17,18 +17,27 @@ import {
 import { cn } from "@/lib/utils";
 
 interface AddHabitFormProps {
-  onAdd: (name: string, category: Habit['category']) => void;
+  onAdd: (name: string, category: Habit['category'], icon?: string, color?: string) => void;
   onCancel: () => void;
 }
 
-const categories = [
-  { key: 'exercise' as const, label: 'Exercise', icon: Activity, color: 'from-red-400 to-pink-400' },
-  { key: 'mindfulness' as const, label: 'Mindfulness', icon: Brain, color: 'from-purple-400 to-indigo-400' },
-  { key: 'nutrition' as const, label: 'Nutrition', icon: Apple, color: 'from-green-400 to-emerald-400' },
-  { key: 'sleep' as const, label: 'Sleep', icon: Moon, color: 'from-blue-400 to-cyan-400' },
-  { key: 'learning' as const, label: 'Learning', icon: BookOpen, color: 'from-yellow-400 to-orange-400' },
-  { key: 'other' as const, label: 'Other', icon: Sparkles, color: 'from-gray-400 to-slate-400' },
-];
+const categoryIcons = {
+  exercise: ["🏃", "💪", "🚴", "🏋️", "⚽", "🏊", "🧘"],
+  mindfulness: ["🧘", "🕯️", "🌸", "☮️", "🧠", "💭", "🌺"],
+  nutrition: ["🥗", "🍎", "🥑", "🍇", "🥕", "💧", "🌱"],
+  sleep: ["😴", "🌙", "🛏️", "⭐", "🌃", "💤", "🌌"],
+  learning: ["📚", "🎓", "📖", "✏️", "🧮", "💡", "🎯"],
+  other: ["✨", "🎨", "🎵", "🌟", "💚", "🔥", "⚡"]
+};
+
+const categoryColors = {
+  exercise: ["#ef4444", "#f97316", "#eab308", "#22c55e", "#06b6d4"],
+  mindfulness: ["#8b5cf6", "#a855f7", "#c084fc", "#e879f9", "#f0abfc"],
+  nutrition: ["#22c55e", "#16a34a", "#15803d", "#14532d", "#84cc16"],
+  sleep: ["#3b82f6", "#1d4ed8", "#1e40af", "#1e3a8a", "#06b6d4"],
+  learning: ["#f59e0b", "#d97706", "#b45309", "#92400e", "#eab308"],
+  other: ["#6b7280", "#4b5563", "#374151", "#1f2937", "#9ca3af"]
+};
 
 const habitSuggestions = {
   exercise: ['Morning walk', 'Yoga practice', '10 pushups', 'Gym session', 'Stretching'],
@@ -42,13 +51,22 @@ const habitSuggestions = {
 export const AddHabitForm = ({ onAdd, onCancel }: AddHabitFormProps) => {
   const [name, setName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<Habit['category']>('exercise');
+  const [selectedIcon, setSelectedIcon] = useState<string>(categoryIcons.exercise[0]);
+  const [selectedColor, setSelectedColor] = useState<string>(categoryColors.exercise[0]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      onAdd(name.trim(), selectedCategory);
+      onAdd(name.trim(), selectedCategory, selectedIcon, selectedColor);
       setName("");
     }
+  };
+
+  const handleCategoryChange = (category: Habit['category']) => {
+    setSelectedCategory(category);
+    // Auto-select first icon and color for new category
+    setSelectedIcon(categoryIcons[category][0]);
+    setSelectedColor(categoryColors[category][0]);
   };
 
   const handleSuggestionClick = (suggestion: string) => {
@@ -90,11 +108,11 @@ export const AddHabitForm = ({ onAdd, onCancel }: AddHabitFormProps) => {
         <div className="space-y-3">
           <Label className="text-sm font-medium">Category</Label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {categories.map(({ key, label, icon: IconComponent, color }) => (
+            {Object.entries(categoryIcons).map(([key, icons]) => (
               <button
                 key={key}
                 type="button"
-                onClick={() => setSelectedCategory(key)}
+                onClick={() => handleCategoryChange(key as Habit['category'])}
                 className={cn(
                   "flex items-center gap-2 p-3 rounded-xl border-2 transition-all duration-200",
                   selectedCategory === key
@@ -102,17 +120,76 @@ export const AddHabitForm = ({ onAdd, onCancel }: AddHabitFormProps) => {
                     : "border-border hover:border-primary/50 hover:bg-primary/5"
                 )}
               >
-                <div className={cn(
-                  "p-1.5 rounded-lg bg-gradient-to-r text-white text-xs",
-                  color
-                )}>
-                  <IconComponent className="w-3 h-3" />
-                </div>
-                <span className="text-sm font-medium">{label}</span>
+                <span className="text-lg">{icons[0]}</span>
+                <span className="text-sm font-medium capitalize">{key}</span>
               </button>
             ))}
           </div>
         </div>
+
+        {/* Icon Selection */}
+        <div className="space-y-3">
+          <Label className="text-sm font-medium">Choose Icon</Label>
+          <div className="grid grid-cols-7 gap-2">
+            {categoryIcons[selectedCategory].map((icon) => (
+              <button
+                key={icon}
+                type="button"
+                onClick={() => setSelectedIcon(icon)}
+                className={cn(
+                  "h-12 rounded-lg border-2 text-xl transition-all duration-200 hover:scale-110",
+                  selectedIcon === icon
+                    ? "border-primary bg-primary/10 shadow-glow"
+                    : "border-border hover:border-primary/50"
+                )}
+              >
+                {icon}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Color Selection */}
+        <div className="space-y-3">
+          <Label className="text-sm font-medium">Choose Color</Label>
+          <div className="flex gap-2 flex-wrap">
+            {categoryColors[selectedCategory].map((color) => (
+              <button
+                key={color}
+                type="button"
+                onClick={() => setSelectedColor(color)}
+                className={cn(
+                  "w-10 h-10 rounded-lg border-2 transition-all duration-200 hover:scale-110",
+                  selectedColor === color
+                    ? "border-primary shadow-glow scale-110"
+                    : "border-border hover:border-primary/50"
+                )}
+                style={{ backgroundColor: color }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Preview */}
+        {name && (
+          <div className="p-4 rounded-lg bg-secondary/30 border border-border">
+            <Label className="text-sm font-medium text-muted-foreground mb-2 block">Preview</Label>
+            <div className="flex items-center gap-3">
+              <div 
+                className="p-3 rounded-2xl text-white shadow-soft flex items-center justify-center"
+                style={{ backgroundColor: selectedColor }}
+              >
+                <span className="text-lg">{selectedIcon}</span>
+              </div>
+              <div>
+                <h4 className="font-semibold">{name}</h4>
+                <Badge variant="secondary" className="text-xs capitalize mt-1">
+                  {selectedCategory}
+                </Badge>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Habit Suggestions */}
         <div className="space-y-3">

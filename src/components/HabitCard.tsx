@@ -62,18 +62,22 @@ export const HabitCard = ({ habit, onToggle, onDelete }: HabitCardProps) => {
 
   return (
     <div className={cn(
-      "wellness-card p-6 transition-all duration-300 hover:shadow-glow",
-      isCompletedToday && "ring-2 ring-success/50 shadow-glow"
+      "wellness-card p-6 transition-all duration-300 hover:shadow-glow hover:scale-[1.02] group cursor-pointer",
+      isCompletedToday && "ring-2 ring-success/50 shadow-glow scale-[1.01]"
     )}>
       <div className="flex items-center justify-between">
         {/* Left side - Habit info */}
         <div className="flex items-center gap-4 flex-1">
           {/* Category icon */}
           <div className={cn(
-            "p-3 rounded-2xl text-white shadow-soft",
-            categoryColors[habit.category]
-          )}>
-            <IconComponent className="w-5 h-5" />
+            "p-3 rounded-2xl text-white shadow-soft transition-all duration-300 hover:scale-105",
+            habit.color ? "" : categoryColors[habit.category]
+          )} style={habit.color ? { backgroundColor: habit.color } : {}}>
+            {habit.icon ? (
+              <span className="text-lg">{habit.icon}</span>
+            ) : (
+              <IconComponent className="w-5 h-5" />
+            )}
           </div>
           
           {/* Habit details */}
