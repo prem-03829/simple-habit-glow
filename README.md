@@ -9,12 +9,8 @@ A lightweight, frontend-only **Wellness & Habit Tracker** built using just `inde
 ## Table of Contents
 
 - [Overview](#overview)  
-- [Features](#features)  
-- [Getting Started](#getting-started)  
-  - [Prerequisites](#prerequisites)  
-  - [Usage](#usage)  
-- [File Structure](#file-structure)  
-- [Customization](#customization)  
+- [Features](#features)
+- [Prerequisites](#prerequisites)     
 - [Future Enhancements](#future-enhancements)  
 - [License](#license)
 
@@ -46,35 +42,8 @@ A lightweight, frontend-only **Wellness & Habit Tracker** built using just `inde
 
 ---
 
-## Getting Started
-
 ### Prerequisites
 - A modern web browser (Chrome, Firefox, Safari, Edge, etc.)
-
-### Usage
-1. Clone or download the repository.
-2. Open `index.html` in your browser to launch the app.
-3. Start adding your habits and enjoy tracking your wellness journey!
-4. All data is stored locally—you can refresh or return to the app anytime without losing progress.
-
----
-
-## File Structure
-.
-├── index.html # Main structure and layout of the app
-├── style.css # Styles for light/dark themes, responsive design, and animations
-└── script.js # Core logic: habit CRUD, streak calculation, LocalStorage, quotes, toggles, animations
-
----
-
-## Customization
-
-Some quick ways to personalize the app:
-
-- **Quotes:** Edit the array of daily quotes in `script.js`.
-- **Themes:** Tweak or expand color palettes in `style.css`.
-- **Animations:** Adjust animations using CSS transitions or simple JS effects.
-- **Icons/Colors per Habit:** Define default habit emojis or color styles in the JavaScript logic.
 
 ---
 
