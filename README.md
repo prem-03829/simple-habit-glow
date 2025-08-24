@@ -69,7 +69,7 @@ This project is open-source and free to use.
 ---
 
 ### 🏆 Competition Note  
-This project was created for a **college competition (CSI-PCE, 24th August 2025)**.  
+This project was created for **Vibe Coding Competion held by CSI-PCE on 24th August 2025**.  
 Its blend of **mobile support, smooth UI, and fun animations** makes it stand out among frontend-only projects.  
 
 ---
