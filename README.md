@@ -1,8 +1,8 @@
-# Track Your Wellness
+# 🌱Track Your Wellness
 
 A lightweight, frontend-only **Wellness & Habit Tracker** built using just `index.html`, `style.css`, and `script.js`. Designed for simplicity, motivation, and portability.
 
-**Live Demo:** https://track-your-wellness-steel.vercel.app/
+🔗 [Live Demo](https://track-your-wellness-steel.vercel.app/)
 
 ---
 
@@ -10,9 +10,9 @@ A lightweight, frontend-only **Wellness & Habit Tracker** built using just `inde
 
 - [Overview](#overview)  
 - [Features](#features)
-- [Prerequisites](#prerequisites)     
-- [Future Enhancements](#future-enhancements)  
-- [License](#license)
+- [Requirements](#prerequisites)     
+- [Future Enhancements](#future-enhancements)
+- [Final Notes](#Final-Notes)
 
 ---
 
@@ -42,7 +42,7 @@ A lightweight, frontend-only **Wellness & Habit Tracker** built using just `inde
 
 ---
 
-### Prerequisites
+### Requirements
 - A modern web browser (Chrome, Firefox, Safari, Edge, etc.)
 
 ---
@@ -59,5 +59,4 @@ A lightweight, frontend-only **Wellness & Habit Tracker** built using just `inde
 
 ## Final Notes
 
-This project is made for short-term showcase in a college competition(held by CSI-PCE on 24th august 2025 )—where first impressions matter. The blend of functionality, playful animations, and a clean UI will help your app stand out. If you would like to flesh out any section or tailor it for your presentation deck, just say the word!
-::contentReference[oaicite:0]{index=0}
+Built for CSI-PCE Vibe-Coding Competition (24th Aug 2025) – designed to impress with clean UI, playful animations, and a strong foundation for innovation.
